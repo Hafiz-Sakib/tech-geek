@@ -17,9 +17,6 @@ const Signup = () => {
     value: "",
     error: "",
   });
-  console.log(email);
-  // console.log(password);
-  // console.log(confirmPassword);
 
   const handleEmailBlur = (emailInput) => {
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput)) {
@@ -29,7 +26,11 @@ const Signup = () => {
     }
   };
   const handlePasswordBlur = (passwordInput) => {
-    setPassword(passwordInput);
+    if (passwordInput.length < 7) {
+      setPassword({ value: "", error: "Password too Short" });
+    } else {
+      setPassword({ value: passwordInput, error: "" });
+    }
   };
   const handleconfirmPasswordBlur = (confirmPasswordInput) => {
     setConfirmPassword(confirmPasswordInput);
@@ -55,16 +56,25 @@ const Signup = () => {
     const email = event.target.email.value;
     const password = event.target.password.value;
     const auth = getAuth(app);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        navigate("/");
-      })
-      .catch((error) => {
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
+
+    if (email === "") {
+      setEmail({ value: "", error: "Email is Required!!" });
+    }
+    if (password === "") {
+      setPassword({ value: "", error: "Password is Required!!" });
+    }
+    if (email.value && password.value) {
+      createUserWithEmailAndPassword(auth, email.value, password.value)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/");
+        })
+        .catch((error) => {
+          const errorMessage = error.message;
+          console.log(errorMessage);
+        });
+    }
   };
 
   return (
@@ -86,7 +96,7 @@ const Signup = () => {
             </div>
           </div>
 
-          {email?.error && <p className="email-error">{email.error}</p>}
+          {email?.error && <p className="error">{email.error}</p>}
           <div className="input-field">
             <label htmlFor="password">Password</label>
             <div className="input-wrapper">
@@ -98,6 +108,7 @@ const Signup = () => {
               />
             </div>
           </div>
+          {password.error && <p className="error">{password.error}</p>}
           <div className="input-field">
             <label htmlFor="confirm-password">Confirm Password</label>
             <div className="input-wrapper">
