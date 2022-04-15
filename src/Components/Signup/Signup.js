@@ -33,7 +33,11 @@ const Signup = () => {
     }
   };
   const handleconfirmPasswordBlur = (confirmPasswordInput) => {
-    setConfirmPassword(confirmPasswordInput);
+    if (confirmPasswordInput === password) {
+      setConfirmPassword({ value: confirmPasswordInput, error: "" });
+    } else {
+      setConfirmPassword({ value: "", error: "Password Did not Matched" });
+    }
   };
 
   const provider = new GoogleAuthProvider();
@@ -122,6 +126,9 @@ const Signup = () => {
               />
             </div>
           </div>
+          {confirmPassword.error && (
+            <p className="error">{confirmPassword.error}</p>
+          )}
           <button type="submit" className="auth-form-submit">
             Sign Up
           </button>
