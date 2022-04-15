@@ -9,7 +9,6 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [user, setUser] = useState({});
   const navigate = useNavigate();
-  console.log(user);
   const auth = getAuth();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -24,10 +23,10 @@ const Navbar = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        // Sign-out successful.
+        console.log("Sign-out successful.");
       })
       .catch((error) => {
-        // An error happened.
+        console.error(error);
       });
     navigate("/login");
   };
