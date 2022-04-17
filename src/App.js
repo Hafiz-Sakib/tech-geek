@@ -18,12 +18,12 @@ function App() {
     <BlogContext.Provider value={[blogs, setBlogs]}>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/videos' element={<Videos />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/blog/:id' element={<BlogDetails />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/videos" element={<Videos />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/blog/:id" element={<BlogDetails />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BlogContext.Provider>
   );

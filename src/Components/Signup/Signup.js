@@ -10,6 +10,7 @@ import {
 import app from "../../Firebase/Firebase.init";
 import "./SIgnUp.css";
 
+const provider = new GoogleAuthProvider();
 const Signup = () => {
   const [email, setEmail] = useState({ value: "", error: "" });
   const [password, setPassword] = useState({ value: "", error: "" });
@@ -33,14 +34,13 @@ const Signup = () => {
     }
   };
   const handleconfirmPasswordBlur = (confirmPasswordInput) => {
-    if (confirmPasswordInput === password) {
+    if (confirmPasswordInput === password.value) {
       setConfirmPassword({ value: confirmPasswordInput, error: "" });
     } else {
-      setConfirmPassword({ value: "", error: "Password Did not Matched" });
+      setConfirmPassword({ value: "", error: "Password Mismatched" });
     }
   };
 
-  const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
   const googleAuth = () => {
     const auth = getAuth(app);
@@ -57,17 +57,21 @@ const Signup = () => {
   };
   const handleSignUp = (event) => {
     event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
+    // const email = event.target.email.value;
+    // const password = event.target.password.value;
     const auth = getAuth(app);
 
-    if (email === "") {
+    if (email.value === "") {
       setEmail({ value: "", error: "Email is Required!!" });
     }
-    if (password === "") {
+    if (password.value === "") {
       setPassword({ value: "", error: "Password is Required!!" });
     }
-    if (email.value && password.value) {
+    if (
+      email.value &&
+      password.value &&
+      confirmPassword.value === password.value
+    ) {
       createUserWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredential) => {
           const user = userCredential.user;
