@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import app from "../../Firebase/Firebase.init";
 import "./SIgnUp.css";
+import toast from "react-hot-toast";
 
 const provider = new GoogleAuthProvider();
 const Signup = () => {
@@ -57,10 +58,8 @@ const Signup = () => {
   };
   const handleSignUp = (event) => {
     event.preventDefault();
-    // const email = event.target.email.value;
-    // const password = event.target.password.value;
-    const auth = getAuth(app);
 
+    const auth = getAuth(app);
     if (email.value === "") {
       setEmail({ value: "", error: "Email is Required!!" });
     }
@@ -74,13 +73,17 @@ const Signup = () => {
     ) {
       createUserWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
+          // const user = userCredential.user;
+          toast.success("Registration Successfull", { id: "success" });
           navigate("/");
         })
         .catch((error) => {
           const errorMessage = error.message;
-          console.log(errorMessage);
+          if (errorMessage.includes("email-already-in-use")) {
+            toast.error("User Already Exists", { id: "error" });
+          } else {
+            toast.error(errorMessage, { id: "error2" });
+          }
         });
     }
   };

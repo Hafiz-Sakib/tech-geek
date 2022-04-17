@@ -8,6 +8,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import app from "../../Firebase/Firebase.init";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const provider = new GoogleAuthProvider();
@@ -32,8 +33,8 @@ const Login = () => {
     const auth = getAuth(app);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
+        // const user = userCredential.user;
+        toast.success("Login Successfull", { id: "success2" });
         navigate("/");
       })
       .catch((error) => {
